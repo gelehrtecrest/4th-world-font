@@ -6,7 +6,7 @@
 <style>
     @font-face {
         font-family: 'FF14FourthWorld';
-        src: url('fonts/FF14FourthWorld.ttf?t=caa3ac64') format('truetype');
+        src: url('fonts/FF14FourthWorld.ttf?t=80ec54b0') format('truetype');
     }
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -43,6 +43,30 @@
         font-weight: bold;
         font-size: 0.9rem;
     }
+    .status-summary {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+    .status-card {
+        flex: 1;
+        min-width: 200px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        text-align: center;
+    }
+    .status-card .num {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-top: 4px;
+    }
+    .status-created { color: #16a34a; }
+    .status-blank { color: #eab308; }
+    .status-total { color: #2563eb; }
+    
     .interactive-box {
         background: #eef2f7;
         padding: 20px;
@@ -74,19 +98,20 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        margin-top: 8px;
+        margin-bottom: 24px;
     }
     th, td {
-        padding: 12px 14px;
+        padding: 10px 12px;
         border-bottom: 1px solid #e1e8ed;
     }
     th {
         background-color: #f8fafc;
         color: #4a5568;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     .preview-img {
-        max-height: 52px;
+        max-height: 48px;
         image-rendering: pixelated;
         border: 1px solid #ddd;
         border-radius: 4px;
@@ -94,7 +119,7 @@
         padding: 2px;
     }
     .preview-svg {
-        max-height: 52px;
+        max-height: 48px;
         border: 1px solid #ddd;
         border-radius: 4px;
         background: #fff;
@@ -107,14 +132,11 @@
         font-size: 0.75rem;
         font-weight: bold;
     }
-    .badge-upper {
-        background: #e3f2fd;
-        color: #1976d2;
-    }
-    .badge-lower {
-        background: #e8f5e9;
-        color: #388e3c;
-    }
+    .badge-upper { background: #e3f2fd; color: #1976d2; }
+    .badge-lower { background: #e8f5e9; color: #388e3c; }
+    .badge-neutral { background: #f1f5f9; color: #64748b; }
+    .badge-success { background: #dcfce7; color: #15803d; }
+    .badge-blank { background: #fef9c3; color: #a16207; }
     .sample-tags {
         margin-top: 8px;
         display: flex;
@@ -155,23 +177,40 @@
     <h1>FF14 第四世界文字 フォントプレビュー</h1>
     <div class="subtitle">
         現在のスムージング設定: <span class="level-badge">Level 50 / 100</span><br>
-        （0 = 元画像そのままの完全生データ ／ 50 = ささくれを除去しつつ原画の筆致を残した中間設定 ／ 100 = 最大平滑化）
+        （0 = 元画像そのままの完全生データ ／ 50 = 推奨中間設定 ／ 100 = 最大平滑化）
+    </div>
+
+    <div class="status-summary">
+        <div class="status-card">
+            <div style="font-size:0.85rem; color:#64748b;">作成済み文字 (実体あり)</div>
+            <div class="num status-created">10 文字</div>
+        </div>
+        <div class="status-card">
+            <div style="font-size:0.85rem; color:#64748b;">素材待ち文字 (空白グリフ)</div>
+            <div class="num status-blank">55 文字</div>
+        </div>
+        <div class="status-card">
+            <div style="font-size:0.85rem; color:#64748b;">対象総文字数 (a-z, A-Z, 0-9, !?-)</div>
+            <div class="num status-total">65 文字</div>
+        </div>
     </div>
 
     <div class="interactive-box">
         <h3>試し打ちテスト（リアルタイム入力）</h3>
         <p style="margin: 4px 0 10px 0; font-size: 0.9rem; color: #555;">
-            下のテキストボックスに入力した文字が、生成された第四世界フォントで表示されます。
+            下のテキストボックスに入力した文字が、生成された第四世界フォントで表示されます。<br>
+            ※素材がない文字は指示通り「空白」として表示されます（エラーやトーフにはなりません）。
         </p>
-        <textarea id="testInput" rows="2">Unmoored Isle</textarea>
+        <textarea id="testInput" rows="2">Unmoored Isle (red rose, 12345!?)</textarea>
         <div class="sample-tags">
             <span style="font-size: 0.85rem; color: #666; align-self: center;">サンプル単語:</span>
-            <button class="sample-btn" onclick="setInput('Unmoored Isle')">Unmoored Isle</button>
-            <button class="sample-btn" onclick="setInput('red rose')">red rose</button>
-            <button class="sample-btn" onclick="setInput('iron soul')">iron soul</button>
-            <button class="sample-btn" onclick="setInput('elder line')">elder line</button>
-            <button class="sample-btn" onclick="setInput('moon order')">moon order</button>
-            <button class="sample-btn" onclick="setInput('miles')">miles</button>
+            <button class="sample-btn" onclick="setInput('Unmoored Isle')">Unmoored Isle (作成済)</button>
+            <button class="sample-btn" onclick="setInput('red rose')">red rose (作成済)</button>
+            <button class="sample-btn" onclick="setInput('iron soul')">iron soul (作成済)</button>
+            <button class="sample-btn" onclick="setInput('miles')">miles (作成済)</button>
+            <button class="sample-btn" onclick="setInput('elder line')">elder line (作成済)</button>
+            <button class="sample-btn" onclick="setInput('FF14 2026!?')">FF14 2026!? (空白確認)</button>
+            <button class="sample-btn" onclick="setInput('A-Z a-z 0-9 ! ? -')">全文字テスト</button>
         </div>
         <div class="rendered-display" id="renderOutput"></div>
     </div>
@@ -185,122 +224,911 @@
     </div>
 
     <h3>登録文字一覧＆変換検証</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>文字</th>
-                <th>種別</th>
-                <th>元画像 (data/)</th>
-                <th>二値化マスク</th>
-                <th>生成SVG</th>
-                <th>TTFフォントレンダリング</th>
-                <th>サイズ (Font座標)</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">I</td>
-            <td style="text-align:center;"><span class="badge badge-upper">大文字</span></td>
-            <td style="text-align:center;"><img src="../data/large_i.jpg" class="preview-img" alt="I original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/large_i.png" class="preview-img" alt="I clean" /></td>
-            <td style="text-align:center;"><img src="svg/large_i.svg" class="preview-svg" alt="I svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">I</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">136 x 669 (Adv: 236)</td>
-        </tr>
+    <p style="font-size:0.9rem; color:#64748b; margin-top:0;">
+        ※画像素材（data/*.jpg, png）が追加されると、自動的にベクター変換され「作成済」に切り替わります。
+    </p>
+    
+        <h4 style="margin: 24px 0 8px 0; color: #2c3e50; font-size: 1.1rem; border-left: 4px solid #3498db; padding-left: 8px;">大文字 (A-Z)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">文字</th>
+                    <th style="width: 10%;">種別</th>
+                    <th style="width: 14%;">状態</th>
+                    <th style="width: 14%;">元画像 (data/)</th>
+                    <th style="width: 14%;">二値化マスク</th>
+                    <th style="width: 14%;">生成SVG</th>
+                    <th style="width: 14%;">TTFレンダリング</th>
+                    <th style="width: 12%;">メトリクス</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">A</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">B</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">C</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">D</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">E</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">F</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">G</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">H</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">I</td>
+                    <td style="text-align:center;"><span class="badge badge-upper">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/large_i.jpg" class="preview-img" alt="I original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/large_i.png" class="preview-img" alt="I clean" /></td>
+                    <td style="text-align:center;"><img src="svg/large_i.svg" class="preview-svg" alt="I svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">I</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">136x669 (Adv:236)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">J</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">K</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">L</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">M</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">N</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">O</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">P</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">Q</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">R</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">S</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">T</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">U</td>
+                    <td style="text-align:center;"><span class="badge badge-upper">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/large_u.jpg" class="preview-img" alt="U original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/large_u.png" class="preview-img" alt="U clean" /></td>
+                    <td style="text-align:center;"><img src="svg/large_u.svg" class="preview-svg" alt="U svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">U</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">376x633 (Adv:476)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">V</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">W</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">X</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">Y</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">Z</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">大文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+            </tbody>
+        </table>
         
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">U</td>
-            <td style="text-align:center;"><span class="badge badge-upper">大文字</span></td>
-            <td style="text-align:center;"><img src="../data/large_u.jpg" class="preview-img" alt="U original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/large_u.png" class="preview-img" alt="U clean" /></td>
-            <td style="text-align:center;"><img src="svg/large_u.svg" class="preview-svg" alt="U svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">U</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">376 x 633 (Adv: 476)</td>
-        </tr>
+        <h4 style="margin: 24px 0 8px 0; color: #2c3e50; font-size: 1.1rem; border-left: 4px solid #3498db; padding-left: 8px;">小文字 (a-z)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">文字</th>
+                    <th style="width: 10%;">種別</th>
+                    <th style="width: 14%;">状態</th>
+                    <th style="width: 14%;">元画像 (data/)</th>
+                    <th style="width: 14%;">二値化マスク</th>
+                    <th style="width: 14%;">生成SVG</th>
+                    <th style="width: 14%;">TTFレンダリング</th>
+                    <th style="width: 12%;">メトリクス</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">a</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">b</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">c</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">d</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_d.jpg" class="preview-img" alt="d original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_d.png" class="preview-img" alt="d clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_d.svg" class="preview-svg" alt="d svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">d</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">407x493 (Adv:507)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">e</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_e.jpg" class="preview-img" alt="e original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_e.png" class="preview-img" alt="e clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_e.svg" class="preview-svg" alt="e svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">e</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">368x483 (Adv:468)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">f</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">g</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">h</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">i</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">j</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">k</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">l</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_l.jpg" class="preview-img" alt="l original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_l.png" class="preview-img" alt="l clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_l.svg" class="preview-svg" alt="l svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">l</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">377x491 (Adv:477)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">m</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_m.jpg" class="preview-img" alt="m original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_m.png" class="preview-img" alt="m clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_m.svg" class="preview-svg" alt="m svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">m</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">495x437 (Adv:595)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">n</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_n.jpg" class="preview-img" alt="n original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_n.png" class="preview-img" alt="n clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_n.svg" class="preview-svg" alt="n svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">n</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">401x432 (Adv:501)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">o</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_o.jpg" class="preview-img" alt="o original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_o.png" class="preview-img" alt="o clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_o.svg" class="preview-svg" alt="o svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">o</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">343x473 (Adv:443)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">p</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">q</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">r</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_r.jpg" class="preview-img" alt="r original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_r.png" class="preview-img" alt="r clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_r.svg" class="preview-svg" alt="r svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">r</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">363x480 (Adv:463)</td>
+                </tr>
+                
+                <tr class="row-created">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center;">s</td>
+                    <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-success">作成済</span></td>
+                    <td style="text-align:center;"><img src="../data/small_s.jpg" class="preview-img" alt="s original" /></td>
+                    <td style="text-align:center;"><img src="cleaned_png/small_s.png" class="preview-img" alt="s clean" /></td>
+                    <td style="text-align:center;"><img src="svg/small_s.svg" class="preview-svg" alt="s svg" /></td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#1a365d;">s</td>
+                    <td style="font-size:0.85rem; color:#666; text-align:center;">368x493 (Adv:468)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">t</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">u</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">v</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">w</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">x</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">y</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">z</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">小文字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:450)</td>
+                </tr>
+                
+            </tbody>
+        </table>
         
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">d</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_d.jpg" class="preview-img" alt="d original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_d.png" class="preview-img" alt="d clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_d.svg" class="preview-svg" alt="d svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">d</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">407 x 493 (Adv: 507)</td>
-        </tr>
+        <h4 style="margin: 24px 0 8px 0; color: #2c3e50; font-size: 1.1rem; border-left: 4px solid #3498db; padding-left: 8px;">数字 (0-9)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">文字</th>
+                    <th style="width: 10%;">種別</th>
+                    <th style="width: 14%;">状態</th>
+                    <th style="width: 14%;">元画像 (data/)</th>
+                    <th style="width: 14%;">二値化マスク</th>
+                    <th style="width: 14%;">生成SVG</th>
+                    <th style="width: 14%;">TTFレンダリング</th>
+                    <th style="width: 12%;">メトリクス</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">0</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">1</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">2</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">3</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">4</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">5</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">6</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">7</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">8</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">9</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">数字</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+            </tbody>
+        </table>
         
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">e</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_e.jpg" class="preview-img" alt="e original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_e.png" class="preview-img" alt="e clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_e.svg" class="preview-svg" alt="e svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">e</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">368 x 483 (Adv: 468)</td>
-        </tr>
+        <h4 style="margin: 24px 0 8px 0; color: #2c3e50; font-size: 1.1rem; border-left: 4px solid #3498db; padding-left: 8px;">記号 (!, ?, -)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">文字</th>
+                    <th style="width: 10%;">種別</th>
+                    <th style="width: 14%;">状態</th>
+                    <th style="width: 14%;">元画像 (data/)</th>
+                    <th style="width: 14%;">二値化マスク</th>
+                    <th style="width: 14%;">生成SVG</th>
+                    <th style="width: 14%;">TTFレンダリング</th>
+                    <th style="width: 12%;">メトリクス</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">!</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">記号</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:300)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">?</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">記号</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:500)</td>
+                </tr>
+                
+                <tr class="row-blank">
+                    <td style="font-weight:bold; font-size:1.4rem; text-align:center; color:#94a3b8;">-</td>
+                    <td style="text-align:center;"><span class="badge badge-neutral">記号</span></td>
+                    <td style="text-align:center;"><span class="badge badge-blank">素材待ち (空白)</span></td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="text-align:center; color:#94a3b8; font-size:0.85rem;">-</td>
+                    <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; background:#f8fafc;" title="空白グリフ（輪郭なし）">
+                        <span style="display:inline-block; border-bottom:1px dashed #cbd5e1; width:24px; height:1.2em;"></span>
+                    </td>
+                    <td style="font-size:0.85rem; color:#94a3b8; text-align:center;">(Adv:400)</td>
+                </tr>
+                
+            </tbody>
+        </table>
         
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">l</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_l.jpg" class="preview-img" alt="l original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_l.png" class="preview-img" alt="l clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_l.svg" class="preview-svg" alt="l svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">l</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">377 x 491 (Adv: 477)</td>
-        </tr>
-        
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">m</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_m.jpg" class="preview-img" alt="m original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_m.png" class="preview-img" alt="m clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_m.svg" class="preview-svg" alt="m svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">m</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">495 x 437 (Adv: 595)</td>
-        </tr>
-        
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">n</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_n.jpg" class="preview-img" alt="n original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_n.png" class="preview-img" alt="n clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_n.svg" class="preview-svg" alt="n svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">n</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">401 x 432 (Adv: 501)</td>
-        </tr>
-        
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">o</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_o.jpg" class="preview-img" alt="o original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_o.png" class="preview-img" alt="o clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_o.svg" class="preview-svg" alt="o svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">o</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">343 x 473 (Adv: 443)</td>
-        </tr>
-        
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">r</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_r.jpg" class="preview-img" alt="r original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_r.png" class="preview-img" alt="r clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_r.svg" class="preview-svg" alt="r svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">r</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">363 x 480 (Adv: 463)</td>
-        </tr>
-        
-        <tr>
-            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">s</td>
-            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
-            <td style="text-align:center;"><img src="../data/small_s.jpg" class="preview-img" alt="s original" /></td>
-            <td style="text-align:center;"><img src="cleaned_png/small_s.png" class="preview-img" alt="s clean" /></td>
-            <td style="text-align:center;"><img src="svg/small_s.svg" class="preview-svg" alt="s svg" /></td>
-            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">s</td>
-            <td style="font-size:0.85rem; color:#666; text-align:center;">368 x 493 (Adv: 468)</td>
-        </tr>
-        
-        </tbody>
-    </table>
 </div>
 
 <script>
