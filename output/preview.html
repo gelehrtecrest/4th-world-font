@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>FF14 第四世界文字 フォントプレビュー (Smooth Level: 50)</title>
+<style>
+    @font-face {
+        font-family: 'FF14FourthWorld';
+        src: url('fonts/FF14FourthWorld.ttf?t=caa3ac64') format('truetype');
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        margin: 0;
+        padding: 24px;
+    }
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 32px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    h1 {
+        margin-top: 0;
+        color: #1a252f;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 12px;
+    }
+    .subtitle {
+        color: #555;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    .level-badge {
+        display: inline-block;
+        background: #2563eb;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    .interactive-box {
+        background: #eef2f7;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .interactive-box textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        font-size: 1.1rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-family: inherit;
+    }
+    .rendered-display {
+        margin-top: 14px;
+        padding: 18px;
+        background: #fff;
+        border-radius: 6px;
+        min-height: 80px;
+        font-family: 'FF14FourthWorld';
+        font-size: 2.8rem;
+        line-height: 1.4;
+        word-break: break-all;
+        border: 1px dashed #3498db;
+        color: #2c3e50;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 12px 14px;
+        border-bottom: 1px solid #e1e8ed;
+    }
+    th {
+        background-color: #f8fafc;
+        color: #4a5568;
+        font-size: 0.9rem;
+    }
+    .preview-img {
+        max-height: 52px;
+        image-rendering: pixelated;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fff;
+        padding: 2px;
+    }
+    .preview-svg {
+        max-height: 52px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fff;
+        padding: 2px;
+    }
+    .badge {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+    .badge-upper {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+    .badge-lower {
+        background: #e8f5e9;
+        color: #388e3c;
+    }
+    .sample-tags {
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .sample-btn {
+        background: #fff;
+        border: 1px solid #cbd5e1;
+        padding: 4px 10px;
+        border-radius: 14px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .sample-btn:hover {
+        background: #3498db;
+        color: #fff;
+        border-color: #3498db;
+    }
+    .chart-container {
+        margin: 24px 0;
+        background: #fafafa;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        text-align: center;
+    }
+    .chart-container img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>FF14 第四世界文字 フォントプレビュー</h1>
+    <div class="subtitle">
+        現在のスムージング設定: <span class="level-badge">Level 50 / 100</span><br>
+        （0 = 元画像そのままの完全生データ ／ 50 = ささくれを除去しつつ原画の筆致を残した中間設定 ／ 100 = 最大平滑化）
+    </div>
+
+    <div class="interactive-box">
+        <h3>試し打ちテスト（リアルタイム入力）</h3>
+        <p style="margin: 4px 0 10px 0; font-size: 0.9rem; color: #555;">
+            下のテキストボックスに入力した文字が、生成された第四世界フォントで表示されます。
+        </p>
+        <textarea id="testInput" rows="2">Unmoored Isle</textarea>
+        <div class="sample-tags">
+            <span style="font-size: 0.85rem; color: #666; align-self: center;">サンプル単語:</span>
+            <button class="sample-btn" onclick="setInput('Unmoored Isle')">Unmoored Isle</button>
+            <button class="sample-btn" onclick="setInput('red rose')">red rose</button>
+            <button class="sample-btn" onclick="setInput('iron soul')">iron soul</button>
+            <button class="sample-btn" onclick="setInput('elder line')">elder line</button>
+            <button class="sample-btn" onclick="setInput('moon order')">moon order</button>
+            <button class="sample-btn" onclick="setInput('miles')">miles</button>
+        </div>
+        <div class="rendered-display" id="renderOutput"></div>
+    </div>
+
+    <div class="chart-container">
+        <h3 style="text-align:left; margin-top:0;">スムージング強度（Level 0〜100）の比較チャート</h3>
+        <p style="text-align:left; font-size:0.9rem; color:#666;">
+            コマンド実行時に <code>--smooth [0〜100]</code> を指定することで、お好みの寄せ具合でフォントを再生成できます。
+        </p>
+        <img src="compare_levels.png" alt="Smooth levels comparison" />
+    </div>
+
+    <h3>登録文字一覧＆変換検証</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>文字</th>
+                <th>種別</th>
+                <th>元画像 (data/)</th>
+                <th>二値化マスク</th>
+                <th>生成SVG</th>
+                <th>TTFフォントレンダリング</th>
+                <th>サイズ (Font座標)</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">I</td>
+            <td style="text-align:center;"><span class="badge badge-upper">大文字</span></td>
+            <td style="text-align:center;"><img src="../data/large_i.jpg" class="preview-img" alt="I original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/large_i.png" class="preview-img" alt="I clean" /></td>
+            <td style="text-align:center;"><img src="svg/large_i.svg" class="preview-svg" alt="I svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">I</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">136 x 669 (Adv: 236)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">U</td>
+            <td style="text-align:center;"><span class="badge badge-upper">大文字</span></td>
+            <td style="text-align:center;"><img src="../data/large_u.jpg" class="preview-img" alt="U original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/large_u.png" class="preview-img" alt="U clean" /></td>
+            <td style="text-align:center;"><img src="svg/large_u.svg" class="preview-svg" alt="U svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">U</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">376 x 633 (Adv: 476)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">d</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_d.jpg" class="preview-img" alt="d original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_d.png" class="preview-img" alt="d clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_d.svg" class="preview-svg" alt="d svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">d</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">407 x 493 (Adv: 507)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">e</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_e.jpg" class="preview-img" alt="e original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_e.png" class="preview-img" alt="e clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_e.svg" class="preview-svg" alt="e svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">e</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">368 x 483 (Adv: 468)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">l</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_l.jpg" class="preview-img" alt="l original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_l.png" class="preview-img" alt="l clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_l.svg" class="preview-svg" alt="l svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">l</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">377 x 491 (Adv: 477)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">m</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_m.jpg" class="preview-img" alt="m original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_m.png" class="preview-img" alt="m clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_m.svg" class="preview-svg" alt="m svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">m</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">495 x 437 (Adv: 595)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">n</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_n.jpg" class="preview-img" alt="n original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_n.png" class="preview-img" alt="n clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_n.svg" class="preview-svg" alt="n svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">n</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">401 x 432 (Adv: 501)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">o</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_o.jpg" class="preview-img" alt="o original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_o.png" class="preview-img" alt="o clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_o.svg" class="preview-svg" alt="o svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">o</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">343 x 473 (Adv: 443)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">r</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_r.jpg" class="preview-img" alt="r original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_r.png" class="preview-img" alt="r clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_r.svg" class="preview-svg" alt="r svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">r</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">363 x 480 (Adv: 463)</td>
+        </tr>
+        
+        <tr>
+            <td style="font-weight:bold; font-size:1.4rem; text-align:center;">s</td>
+            <td style="text-align:center;"><span class="badge badge-lower">小文字</span></td>
+            <td style="text-align:center;"><img src="../data/small_s.jpg" class="preview-img" alt="s original" /></td>
+            <td style="text-align:center;"><img src="cleaned_png/small_s.png" class="preview-img" alt="s clean" /></td>
+            <td style="text-align:center;"><img src="svg/small_s.svg" class="preview-svg" alt="s svg" /></td>
+            <td style="font-family:'FF14FourthWorld'; font-size:2.4rem; text-align:center; color:#2c3e50;">s</td>
+            <td style="font-size:0.85rem; color:#666; text-align:center;">368 x 493 (Adv: 468)</td>
+        </tr>
+        
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const input = document.getElementById('testInput');
+    const output = document.getElementById('renderOutput');
+    function update() {
+        output.textContent = input.value;
+    }
+    input.addEventListener('input', update);
+    function setInput(text) {
+        input.value = text;
+        update();
+    }
+    update();
+</script>
+</body>
+</html>
